@@ -15,7 +15,7 @@ class _NewExpense extends State<NewExpense> {
   final _amountController = TextEditingController();
   DateTime? _selectedDate;
   Category _selectedCategory = Category.leisure;
-  
+
   void _presentDatePicker() async {
     final now = DateTime.now();
     final firstDate = DateTime(now.year - 1, now.month, now.day);
@@ -29,6 +29,34 @@ class _NewExpense extends State<NewExpense> {
     setState(() {
       _selectedDate = pickedDate;
     });
+  }
+
+  void _submitExpenseData() {
+    final enteredAmount = double.tryParse(_amountController.text);
+    final amountIsInvalid = enteredAmount == null || enteredAmount <= 0;
+    if (_titleController.text.trim().isEmpty ||
+        amountIsInvalid ||
+        _selectedDate == null) {
+      // show error message.
+      showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+              title: const Text("Invalid Input"),
+              content: const Text(
+                  "Please make sure a valid title, amount date and category is entered."),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(ctx);
+                  },
+                  child: const Text('Okay'),
+                )
+              ],
+          )
+      );
+
+      return;
+    }
   }
 
   @override
@@ -90,11 +118,10 @@ class _NewExpense extends State<NewExpense> {
                           value: category,
                           child: Text(
                             category.name.toUpperCase(),
-                          )
-                      ))
+                          )))
                       .toList(),
                   onChanged: (value) {
-                    if(value == null){
+                    if (value == null) {
                       return;
                     }
                     setState(() {
@@ -109,10 +136,7 @@ class _NewExpense extends State<NewExpense> {
                 child: const Text("Cancel"),
               ),
               ElevatedButton(
-                onPressed: () {
-                  print(_titleController.text);
-                  print(_amountController.text);
-                },
+                onPressed: _submitExpenseData,
                 child: const Text("Save Expense"),
               )
             ],
