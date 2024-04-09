@@ -5,7 +5,9 @@ import 'package:expense_tracker/model/expense.dart';
 final formatter = DateFormat.yMd();
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key});
+  const NewExpense({super.key, required this.onAddExpense});
+  final void Function(Expense expense) onAddExpense;
+
   @override
   State<NewExpense> createState() => _NewExpense();
 }
@@ -57,6 +59,9 @@ class _NewExpense extends State<NewExpense> {
 
       return;
     }
+    
+    // you can't access to properties of the widget class in the state class directly
+    widget.onAddExpense(Expense(title: _titleController.text, amount: enteredAmount, date: _selectedDate!, category: _selectedCategory));
   }
 
   @override
