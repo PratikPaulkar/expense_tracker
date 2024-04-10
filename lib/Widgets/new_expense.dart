@@ -43,25 +43,29 @@ class _NewExpense extends State<NewExpense> {
       showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
-              title: const Text("Invalid Input"),
-              content: const Text(
-                  "Please make sure a valid title, amount date and category is entered."),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(ctx);
-                  },
-                  child: const Text('Okay'),
-                )
-              ],
-          )
-      );
+                title: const Text("Invalid Input"),
+                content: const Text(
+                    "Please make sure a valid title, amount date and category is entered."),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(ctx);
+                    },
+                    child: const Text('Okay'),
+                  )
+                ],
+              ));
 
       return;
     }
-    
+
     // you can't access to properties of the widget class in the state class directly
-    widget.onAddExpense(Expense(title: _titleController.text, amount: enteredAmount, date: _selectedDate!, category: _selectedCategory));
+    widget.onAddExpense(Expense(
+        title: _titleController.text,
+        amount: enteredAmount,
+        date: _selectedDate!,
+        category: _selectedCategory
+    ));
   }
 
   @override
@@ -74,7 +78,7 @@ class _NewExpense extends State<NewExpense> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.fromLTRB(16, 48, 16, 16),
       child: Column(
         children: [
           TextField(
